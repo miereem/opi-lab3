@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="tpo-lab1" default="build" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+    
+    <!-- Load properties file -->
+    <property file="build.properties"/>
+    
+    <!-- Define classpaths -->
+    <path id="classpath">
+        <fileset dir="${lib.dir}" erroronmissingdir="false">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="test.classpath">
+        <path refid="classpath"/>
+        <pathelement location="${classes.dir}"/>
+        <pathelement location="${test.classes.dir}"/>
+        <fileset dir="${lib.dir}" erroronmissingdir="false">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+    
+    <!-- Initialize build environment -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${test.classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${docs.dir}"/>
+        <mkdir dir="${reports.dir}"/>
+        <mkdir dir="${test.report.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+        <tstamp>
+            <format property="build.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+    </target>
+    
+    <!-- Download all dependencies (JUnit and Lombok) -->
+    <target name="download-deps" depends="init">
+        <echo message="Downloading dependencies (JUnit ${junit.version}, Lombok ${lombok.version})..."/>
+        
+        <!-- Download JUnit -->
+        <get src="https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/${junit.version}/junit-jupiter-api-${junit.version}.jar" 
+             dest="${lib.dir}/junit-jupiter-api-${junit.version}.jar" 
+             skipexisting="true" 
+             usetimestamp="true"/>
+        <get src="https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-engine/${junit.version}/junit-jupiter-engine-${junit.version}.jar" 
+             dest="${lib.dir}/junit-jupiter-engine-${junit.version}.jar" 
+             skipexisting="true" 
+             usetimestamp="true"/>
+        <get src="https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/${junit.platform.version}/junit-platform-console-standalone-${junit.platform.version}.jar" 
+             dest="${lib.dir}/junit-platform-console-standalone-${junit.platform.version}.jar" 
+             skipexisting="true" 
+             usetimestamp="true"/>
+        <get src="https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-params/${junit.version}/junit-jupiter-params-${junit.version}.jar" 
+             dest="${lib.dir}/junit-jupiter-params-${junit.version}.jar" 
+             skipexisting="true" 
+             usetimestamp="true"/>
+        
+        <!-- Download Lombok -->
+        <get src="https://repo1.maven.org/maven2/org/projectlombok/lombok/${lombok.version}/lombok-${lombok.version}.jar" 
+             dest="${lib.dir}/lombok-${lombok.version}.jar" 
+             skipexisting="true" 
+             usetimestamp="true"/>
+        
+        <echo message="Dependencies downloaded successfully."/>
+    </target>
+    
+    <!-- Generate MANIFEST.MF dynamically -->
+    <target name="generate-manifest" depends="init">
+        <echo message="Generating MANIFEST.MF..."/>
+        <manifest file="${manifest.file}" mode="replace">
+            <attribute name="Manifest-Version" value="1.0"/>
+            <attribute name="Main-Class" value="${main.class}"/>
+            <attribute name="Implementation-Title" value="${project.name}"/>
+            <attribute name="Implementation-Version" value="${project.version}"/>
+            <attribute name="Implementation-Vendor" value="${project.vendor}"/>
+            <attribute name="Built-Date" value="${build.time}"/>
+        </manifest>
+    </target>
+    
+    <!-- Target 1: compile - компиляция исходных кодов проекта -->
+    <target name="compile" depends="download-deps" description="Compile source code">
+        <echo message="Compiling source code..."/>
+        <javac srcdir="${src.dir}" 
+               destdir="${classes.dir}" 
+               classpathref="classpath"
+               includeantruntime="false"
+               encoding="UTF-8"
+               source="11"
+               target="11">
+        </javac>
+        
+        <!-- Compile tests -->
+        <javac srcdir="${test.src.dir}" 
+               destdir="${test.classes.dir}" 
+               includeantruntime="false"
+               encoding="UTF-8"
+               source="11"
+               target="11"
+               failonerror="false">
+            <classpath>
+                <path refid="classpath"/>
+                <pathelement location="${classes.dir}"/>
+            </classpath>
+        </javac>
+        
+        <!-- Copy test resources -->
+        <copy todir="${test.classes.dir}" failonerror="false">
+            <fileset dir="${test.resources.dir}" erroronmissingdir="false">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <!-- Target 2: build - компиляция и упаковка в jar-архив -->
+    <target name="build" depends="compile,generate-manifest" description="Build JAR archive">
+        <echo message="Building JAR file..."/>
+        
+        <!-- Create JAR -->
+        <jar destfile="${jar.file}" manifest="${manifest.file}">
+            <fileset dir="${classes.dir}"/>
+        </jar>
+        
+        <echo message="JAR file created: ${jar.file}"/>
+    </target>
+    
+    <!-- Target 3: clean - удаление скомпилированных классов и временных файлов -->
+    <target name="clean" description="Clean build artifacts">
+        <echo message="Cleaning build artifacts..."/>
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <echo message="Clean complete."/>
+    </target>
+    
+    <!-- Target 4: test - запуск junit-тестов -->
+    <target name="test" depends="build" description="Run JUnit tests">
+        <echo message="Running JUnit tests..."/>
+        
+        <!-- Build classpath for testing -->
+        <pathconvert property="test.class.path" pathsep=":">
+            <path>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${classes.dir}"/>
+                <pathelement location="${test.classes.dir}"/>
+            </path>
+        </pathconvert>
+        
+        <!-- Run tests using JUnit Platform Console -->
+        <java jar="${lib.dir}/junit-platform-console-standalone-${junit.platform.version}.jar" fork="true" failonerror="true">
+            <arg value="--class-path"/>
+            <arg value="${test.class.path}"/>
+            <arg value="--scan-class-path"/>
+            <arg value="--reports-dir=${test.report.dir}"/>
+        </java>
+        
+        <echo message="Tests completed successfully."/>
+    </target>
+    
+    <!-- Target 5: xml - валидация всех xml-файлов в проекте -->
+    <target name="xml" description="Validate XML files">
+        <echo message="Validating XML files..."/>
+        <xmlvalidate failonerror="false" lenient="true">
+            <fileset dir="." includes="**/*.xml"/>
+        </xmlvalidate>
+        <echo message="XML validation complete."/>
+    </target>
+    
+    <!-- Target 6: doc - генерация javadoc и добавление MD5/SHA-1 в MANIFEST -->
+    <target name="doc" depends="compile,generate-manifest" description="Generate Javadoc and checksums">
+        <echo message="Generating Javadoc..."/>
+        
+        <!-- Generate Javadoc -->
+        <javadoc sourcepath="${src.dir}"
+                 destdir="${docs.dir}"
+                 packagenames="org.example.*"
+                 access="private"
+                 encoding="UTF-8"
+                 docencoding="UTF-8"
+                 charset="UTF-8"
+                 failonerror="false">
+            <classpath refid="classpath"/>
+        </javadoc>
+        
+        <!-- Calculate MD5 and SHA-1 for source files -->
+        <checksum algorithm="MD5" file="${src.dir}/org/example/Main.java" property="main.md5"/>
+        <checksum algorithm="SHA-1" file="${src.dir}/org/example/Main.java" property="main.sha1"/>
+        
+        <!-- Update MANIFEST with checksums -->
+        <manifest file="${manifest.file}" mode="update">
+            <attribute name="Main-MD5" value="${main.md5}"/>
+            <attribute name="Main-SHA1" value="${main.sha1}"/>
+        </manifest>
+        
+        <!-- Rebuild JAR with Javadoc and updated manifest -->
+        <jar destfile="${jar.file}" manifest="${manifest.file}">
+            <fileset dir="${classes.dir}"/>
+            <fileset dir="${docs.dir}"/>
+        </jar>
+        
+        <echo message="Javadoc generated and checksums added to MANIFEST."/>
+    </target>
+    
+    <!-- Target 7: native2ascii - преобразование файлов локализации -->
+    <target name="native2ascii" depends="init" description="Convert localization files with native2ascii">
+        <echo message="Converting localization files..."/>
+        
+        <!-- Create sample localization files if they don't exist -->
+        <mkdir dir="${resources.dir}"/>
+        <echo file="${resources.dir}/messages_en.properties">app.greeting=Hello World!
+app.title=TPO Lab 1
+app.author=miereem</echo>
+        <echo file="${resources.dir}/messages_ru.properties">app.greeting=Привет мир!
+app.title=ТПО Лаб 1
+app.author=миреем</echo>
+        
+        <mkdir dir="${native2ascii.dest.dir}"/>
+        
+        <!-- Convert properties files -->
+        <native2ascii encoding="UTF-8" 
+                      src="${resources.dir}" 
+                      dest="${native2ascii.dest.dir}"
+                      includes="*.properties"/>
+        
+        <echo message="Native2ASCII conversion complete."/>
+    </target>
+    
+    <!-- Target 8: env - сборка и запуск в альтернативном окружении -->
+    <target name="env" depends="build" description="Build and run in alternative environment">
+        <echo message="Running in alternative environment..."/>
+        <echo message="Java Home: ${alt.java.home}"/>
+        <echo message="JVM Args: ${alt.jvm.args}"/>
+        
+        <java jar="${jar.file}" fork="true">
+            <jvmarg line="${alt.jvm.args}"/>
+        </java>
+    </target>
+    
+    <!-- Target 9: alt - создание альтернативной версии с измененными именами -->
+    <target name="alt" depends="init" description="Create alternative version with renamed classes">
+        <echo message="Creating alternative version..."/>
+        
+        <mkdir dir="${alt.src.dir}"/>
+        
+        <!-- Copy source files -->
+        <copy todir="${alt.src.dir}">
+            <fileset dir="${src.dir}"/>
+        </copy>
+        
+        <!-- Replace class names and variables -->
+        <replace dir="${alt.src.dir}" includes="**/*.java">
+            <replacefilter token="${alt.replace.from}" value="${alt.replace.to}"/>
+            <replacefilter token="${alt.class.from}" value="${alt.class.to}"/>
+        </replace>
+        
+        <!-- Compile alternative version -->
+        <javac srcdir="${alt.src.dir}" 
+               destdir="${classes.dir}" 
+               classpathref="classpath"
+               includeantruntime="false"
+               encoding="UTF-8"
+               source="11"
+               target="11"/>
+        
+        <!-- Package alternative version -->
+        <jar destfile="${dist.dir}/${alt.jar.name}" manifest="${manifest.file}">
+            <fileset dir="${classes.dir}"/>
+        </jar>
+        
+        <echo message="Alternative version created: ${alt.jar.name}"/>
+    </target>
+    
+    <!-- Target 10: report - сохранение отчета junit и commit в git -->
+    <target name="report" depends="test" description="Save JUnit report and commit to Git">
+        <echo message="Saving test report and committing to Git..."/>
+        
+        <!-- Copy test report -->
+        <copy todir="${reports.dir}" failonerror="false">
+            <fileset dir="${test.report.dir}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+        
+        <!-- Git add and commit -->
+        <exec executable="git" failonerror="false">
+            <arg value="add"/>
+            <arg value="${reports.dir}"/>
+        </exec>
+        
+        <exec executable="git" failonerror="false">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="${git.commit.message} - Test report"/>
+        </exec>
+        
+        <echo message="Test report saved and committed to Git."/>
+    </target>
+    
+    <!-- Target 11: team - сборка 4 предыдущих ревизий из git -->
+    <target name="team" depends="init" description="Build 4 previous Git revisions">
+        <echo message="Building previous revisions..."/>
+        
+        <mkdir dir="${team.build.dir}"/>
+        
+        <!-- Get current commit hash -->
+        <exec executable="git" outputproperty="git.current.hash">
+            <arg value="rev-parse"/>
+            <arg value="HEAD"/>
+        </exec>
+        
+        <!-- Build previous revisions -->
+        <exec executable="bash" failonerror="false">
+            <arg value="-c"/>
+            <arg value="for i in {1..${team.revisions}}; do git checkout HEAD~$i 2>/dev/null; ant build -Djar.file=${team.build.dir}/${project.name}-rev$i.jar 2>/dev/null; done; git checkout ${git.current.hash} 2>/dev/null"/>
+        </exec>
+        
+        <!-- Create ZIP archive -->
+        <zip destfile="${team.zip.file}">
+            <fileset dir="${team.build.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </zip>
+        
+        <echo message="Team build complete: ${team.zip.file}"/>
+    </target>
+    
+    <!-- Target 12: diff - проверка и commit при изменении указанных классов -->
+    <target name="diff" description="Check Git status and commit if specified classes changed">
+        <echo message="Checking Git status for watched classes: ${git.classes.to.watch}"/>
+        
+        <!-- Check if any watched classes are modified using bash script -->
+        <exec executable="bash" outputproperty="check.result" resultproperty="check.code">
+            <arg value="-c"/>
+            <arg value="modified=$(git diff --name-only HEAD); IFS=',' read -ra CLASSES &lt;&lt;&lt; '${git.classes.to.watch}'; for class in &quot;$${CLASSES[@]}&quot;; do simple=$${class##*.}; echo &quot;$$modified&quot; | grep -q &quot;$$simple.java&quot; &amp;&amp; echo &quot;MODIFIED&quot; &amp;&amp; exit 0; done; exit 1"/>
+        </exec>
+        
+        <!-- Set property if classes were modified (exit code 0) -->
+        <condition property="classes.modified">
+            <equals arg1="${check.code}" arg2="0"/>
+        </condition>
+        
+        <!-- Commit if classes modified -->
+        <exec executable="git" failonerror="false" if:set="classes.modified">
+            <arg value="add"/>
+            <arg value="."/>
+        </exec>
+        
+        <exec executable="git" failonerror="false" if:set="classes.modified">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="${git.commit.message} - Watched classes modified"/>
+        </exec>
+        
+        <echo message="Diff check complete. Watched classes from property were modified." if:set="classes.modified"/>
+        <echo message="No changes to watched classes detected." unless:set="classes.modified"/>
+    </target>
+    
+    <!-- Target 13: history - откат к работающей версии при ошибке компиляции -->
+    <target name="history" description="Rollback to working version if compilation fails">
+        <echo message="Checking compilation and rolling back if needed..."/>
+        
+        <!-- Try to compile -->
+        <exec executable="ant" resultproperty="compile.result" failonerror="false">
+            <arg value="compile"/>
+        </exec>
+        
+        <!-- If compilation failed, try previous revisions -->
+        <exec executable="bash" failonerror="false">
+            <arg value="-c"/>
+            <arg value="if [ ${compile.result} -ne 0 ]; then for i in {1..${history.max.revisions}}; do git checkout HEAD~$i; ant compile &amp;&amp; git diff HEAD~1 > ${history.diff.file} &amp;&amp; break; done; fi"/>
+        </exec>
+        
+        <echo message="History rollback complete."/>
+    </target>
+    
+    <!-- Target 14: scp - перемещение собранного jar на удаленный сервер -->
+    <target name="scp" depends="build" description="Deploy JAR file via SCP">
+        <echo message="Deploying JAR file via SCP..."/>
+        <echo message="Host: ${scp.host}"/>
+        <echo message="User: ${scp.user}"/>
+        <echo message="Remote dir: ${scp.remote.dir}"/>
+        
+        <!-- Note: Requires ant-jsch.jar and SSH key setup -->
+        <scp file="${jar.file}"
+             todir="${scp.user}@${scp.host}:${scp.remote.dir}"
+             keyfile="${scp.key.file}"
+             trust="true"
+             failonerror="false"/>
+        
+        <echo message="SCP deployment complete (if SSH key configured)."/>
+    </target>
+    
+    <!-- Target 15: music - воспроизведение музыки по завершению сборки -->
+    <target name="music" depends="build" description="Play music after successful build">
+        <echo message="Playing build success music..."/>
+        
+        <!-- Create a simple beep sound (cross-platform) -->
+        <exec executable="bash" failonerror="false">
+            <arg value="-c"/>
+            <arg value="echo -e '\a'"/>
+        </exec>
+        
+        <echo message="♪♫ Build successful! ♪♫"/>
+    </target>
+    
+    <!-- Help target -->
+    <target name="help" description="Display help information">
+        <echo message="Available targets:"/>
+        <echo message="  compile      - Compile source code"/>
+        <echo message="  build        - Build JAR archive"/>
+        <echo message="  clean        - Clean build artifacts"/>
+        <echo message="  test         - Run JUnit tests"/>
+        <echo message="  xml          - Validate XML files"/>
+        <echo message="  doc          - Generate Javadoc and checksums"/>
+        <echo message="  native2ascii - Convert localization files"/>
+        <echo message="  env          - Run in alternative environment"/>
+        <echo message="  alt          - Create alternative version"/>
+        <echo message="  report       - Save test report and commit to Git"/>
+        <echo message="  team         - Build 4 previous Git revisions"/>
+        <echo message="  diff         - Check and commit if classes changed"/>
+        <echo message="  history      - Rollback to working version"/>
+        <echo message="  scp          - Deploy via SCP"/>
+        <echo message="  music        - Play build success music"/>
+    </target>
+    
+</project>
