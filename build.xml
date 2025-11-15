@@ -188,7 +188,8 @@
             <arg value="-p"/>
             <arg value="oHNC*3712"/>
             <arg value="scp"/>
-
+            <arg value="-P"/>
+            <arg value="${scp.port}"/>
             <arg value="${jar.file}"/>
 
             <arg value="${scp.user}@${scp.host}:${scp.remote.dir}/"/>
