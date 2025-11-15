@@ -281,35 +281,66 @@ app.author=миреем</echo>
     </target>
     
     <!-- Target 11: alt - создание альтернативной версии с измененными именами -->
-    <target name="alt" depends="init" description="Create alternative version with renamed classes">
-        <echo message="Creating alternative version..."/>
-        
+    <target name="alt" description="Generate alternative version of the project">
+
+        <echo message="Generating alternative version of the program..."/>
+
+        <delete dir="${alt.src.dir}" failonerror="false"/>
         <mkdir dir="${alt.src.dir}"/>
-        
+
         <copy todir="${alt.src.dir}">
-            <fileset dir="${src.dir}"/>
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
         </copy>
-        
-        <replace dir="${alt.src.dir}" includes="**/*.java">
-            <replacefilter token="${alt.replace.from}" value="${alt.replace.to}"/>
-            <replacefilter token="${alt.class.from}" value="${alt.class.to}"/>
-        </replace>
-        
+
+        <replaceregexp file="${alt.src.dir}/org/example/Main.java"
+                       match="${alt.replace.from}"
+                       replace="${alt.replace.to}"
+                       byline="true"/>
+
+        <replaceregexp match="${alt.class.from}"
+                       replace="${alt.class.to}"
+                       byline="true">
+            <fileset dir="${alt.src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </replaceregexp>
+
+        <move file="${alt.src.dir}/org/example/Main.java"
+              tofile="${alt.src.dir}/org/example/${alt.replace.to}.java"
+              failonerror="false"/>
+
+        <move file="${alt.src.dir}/org/example/task1/Cos.java"
+              tofile="${alt.src.dir}/org/example/task1/${alt.class.to}.java"
+              failonerror="false"/>
+
+        <echo message="Files and class names replaced."/>
+
+        <mkdir dir="${build.dir}/alt-classes"/>
+
         <javac srcdir="${alt.src.dir}"
-               destdir="${classes.dir}" 
-               classpathref="classpath"
+               destdir="${build.dir}/alt-classes"
                includeantruntime="false"
-               encoding="UTF-8"
-               source="11"
-               target="11"/>
-        
-        <jar destfile="${dist.dir}/${alt.jar.name}" manifest="${manifest.file}">
-            <fileset dir="${classes.dir}"/>
+               encoding="UTF-8">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${classes.dir}"/>
+            </classpath>
+        </javac>
+
+        <jar destfile="${dist.dir}/${alt.jar.name}" basedir="${build.dir}/alt-classes">
+            <manifest>
+                <attribute name="Main-Class" value="org.example.${alt.replace.to}"/>
+            </manifest>
         </jar>
-        
-        <echo message="Alternative version created: ${alt.jar.name}"/>
+
+        <echo message="Alternative JAR generated: ${dist.dir}/${alt.jar.name}"/>
     </target>
-    
+
+
     <!-- Target 12: report - сохранение отчета junit и commit в git -->
     <target name="report" depends="test" description="Save JUnit report and commit to Git">
         <echo message="Saving test report and committing to Git..."/>
