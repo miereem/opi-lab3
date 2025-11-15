@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnit Jupiter" tests="28" skipped="0" failures="0" errors="0" time="0.081" hostname="mbp-mabdurasulkyzy-OZON-FVFFK3JQQ05N" timestamp="2025-11-15T11:39:38">
+<properties>
+<property name="apple.awt.application.name" value="ConsoleLauncher"/>
+<property name="file.encoding" value="UTF-8"/>
+<property name="file.separator" value="/"/>
+<property name="java.class.path" value="/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/apiguardian-api-1.1.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-jupiter-api-5.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-jupiter-engine-5.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-jupiter-params-5.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-platform-commons-1.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-platform-console-1.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-platform-engine-1.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-platform-launcher-1.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/junit-platform-reporting-1.8.2.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/lombok-1.18.32.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/lib/opentest4j-1.2.0.jar:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/build/classes:/Users/mabdurasulkyzy/Downloads/RemoteRepoClone/build/test-classes"/>
+<property name="java.class.version" value="69.0"/>
+<property name="java.home" value="/opt/homebrew/Cellar/openjdk/25/libexec/openjdk.jdk/Contents/Home"/>
+<property name="java.io.tmpdir" value="/var/folders/77/4z7143_s4519v5m7gsbf28gh0000gn/T/"/>
+<property name="java.library.path" value="/Users/mabdurasulkyzy/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+<property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+<property name="java.runtime.version" value="25"/>
+<property name="java.specification.name" value="Java Platform API Specification"/>
+<property name="java.specification.vendor" value="Oracle Corporation"/>
+<property name="java.specification.version" value="25"/>
+<property name="java.vendor" value="Homebrew"/>
+<property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+<property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+<property name="java.vendor.version" value="Homebrew"/>
+<property name="java.version" value="25"/>
+<property name="java.version.date" value="2025-09-16"/>
+<property name="java.vm.compressedOopsMode" value="Zero based"/>
+<property name="java.vm.info" value="mixed mode, sharing"/>
+<property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+<property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+<property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<property name="java.vm.specification.version" value="25"/>
+<property name="java.vm.vendor" value="Homebrew"/>
+<property name="java.vm.version" value="25"/>
+<property name="jdk.debug" value="release"/>
+<property name="line.separator" value="
+"/>
+<property name="native.encoding" value="UTF-8"/>
+<property name="os.arch" value="aarch64"/>
+<property name="os.name" value="Mac OS X"/>
+<property name="os.version" value="15.6.1"/>
+<property name="path.separator" value=":"/>
+<property name="stderr.encoding" value="UTF-8"/>
+<property name="stdin.encoding" value="UTF-8"/>
+<property name="stdout.encoding" value="UTF-8"/>
+<property name="sun.arch.data.model" value="64"/>
+<property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/25/libexec/openjdk.jdk/Contents/Home/lib"/>
+<property name="sun.cpu.endian" value="little"/>
+<property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+<property name="sun.java.command" value="org.junit.platform.console.ConsoleLauncher --scan-class-path --reports-dir=reports/junit"/>
+<property name="sun.java.launcher" value="SUN_STANDARD"/>
+<property name="sun.jnu.encoding" value="UTF-8"/>
+<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+<property name="user.country" value="RU"/>
+<property name="user.dir" value="/Users/mabdurasulkyzy/Downloads/RemoteRepoClone"/>
+<property name="user.home" value="/Users/mabdurasulkyzy"/>
+<property name="user.language" value="en"/>
+<property name="user.name" value="mabdurasulkyzy"/>
+<property name="user.timezone" value="Europe/Moscow"/>
+</properties>
+<testcase name="checkNegativeValues()" classname="task2.ShellSortTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task2.ShellSortTest]/[method:checkNegativeValues()]
+display-name: Check negative values
+]]></system-out>
+</testcase>
+<testcase name="checkDecreaseCognitiveAbilities()" classname="task3.MainTest$CognitiveAbilitiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task3.MainTest]/[nested-class:CognitiveAbilitiesTest]/[method:checkDecreaseCognitiveAbilities()]
+display-name: Check decrease cognitive abilities
+]]></system-out>
+</testcase>
+<testcase name="checkIncreaseCognitiveAbilities()" classname="task3.MainTest$CognitiveAbilitiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task3.MainTest]/[nested-class:CognitiveAbilitiesTest]/[method:checkIncreaseCognitiveAbilities()]
+display-name: Check increase cognitive abilities
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[1]" classname="task1.CosTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#1]
+display-name: cos(-6.283185307179586)
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[2]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#2]
+display-name: cos(-3.141592653589793)
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[3]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#3]
+display-name: cos(-1.5707963267948966)
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[4]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#4]
+display-name: cos(0.0)
+]]></system-out>
+</testcase>
+<testcase name="checkEmpty()" classname="task2.ShellSortTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task2.ShellSortTest]/[method:checkEmpty()]
+display-name: Check empty
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[5]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#5]
+display-name: cos(1.5707963267948966)
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[6]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#6]
+display-name: cos(3.141592653589793)
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[7]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#7]
+display-name: cos(4.71238898038469)
+]]></system-out>
+</testcase>
+<testcase name="checkThingsOwner()" classname="task3.MainTest$CognitiveAbilitiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task3.MainTest]/[nested-class:CognitiveAbilitiesTest]/[method:checkThingsOwner()]
+display-name: Check thing's owner
+]]></system-out>
+</testcase>
+<testcase name="checkPiDots(double)[8]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkPiDots(double)]/[test-template-invocation:#8]
+display-name: cos(6.283185307179586)
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[1]" classname="task1.CosTest" time="0.018">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#1]
+display-name: cos(-5.13) = 0.4055
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[2]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#2]
+display-name: cos(-3.84) = -0.7658
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[3]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#3]
+display-name: cos(-0.986) = 0.552
+]]></system-out>
+</testcase>
+<testcase name="checkSorting()" classname="task2.ShellSortTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task2.ShellSortTest]/[method:checkSorting()]
+display-name: Check positive and negative values
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[4]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#4]
+display-name: cos(1.17) = 0.3902
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[5]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#5]
+display-name: cos(2.567) = -0.8394
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[6]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#6]
+display-name: cos(5.32) = 0.5709
+]]></system-out>
+</testcase>
+<testcase name="checkCosNaN()" classname="task1.CosTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[method:checkCosNaN()]
+display-name: Check NaN
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[7]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#7]
+display-name: cos(10) = -0.8391
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[8]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#8]
+display-name: cos(19.78) = 0.5975
+]]></system-out>
+</testcase>
+<testcase name="checkBetweenDotsMinusPiAndPi(double, double)[9]" classname="task1.CosTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task1.CosTest]/[test-template:checkBetweenDotsMinusPiAndPi(double, double)]/[test-template-invocation:#9]
+display-name: cos(63.21) = 0.9294
+]]></system-out>
+</testcase>
+<testcase name="checkNull()" classname="task2.ShellSortTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task2.ShellSortTest]/[method:checkNull()]
+display-name: Check null
+]]></system-out>
+</testcase>
+<testcase name="checkBeyondReachCognitiveAbilities()" classname="task3.MainTest$CognitiveAbilitiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task3.MainTest]/[nested-class:CognitiveAbilitiesTest]/[method:checkBeyondReachCognitiveAbilities()]
+display-name: Check beyond reach cognitive abilities
+]]></system-out>
+</testcase>
+<testcase name="checkZeros()" classname="task2.ShellSortTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task2.ShellSortTest]/[method:checkZeros()]
+display-name: Check zeros
+]]></system-out>
+</testcase>
+<testcase name="checkNegativeCognitiveAbilities()" classname="task3.MainTest$CognitiveAbilitiesTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:task3.MainTest]/[nested-class:CognitiveAbilitiesTest]/[method:checkNegativeCognitiveAbilities()]
+display-name: Check negative cognitive abilities
+]]></system-out>
+</testcase>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: JUnit Jupiter
+]]></system-out>
+</testsuite>
