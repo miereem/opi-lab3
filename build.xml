@@ -81,6 +81,7 @@
 
 
         <!-- Lombok -->
+
         <get src="https://repo1.maven.org/maven2/org/projectlombok/lombok/${lombok.version}/lombok-${lombok.version}.jar" 
              dest="${lib.dir}/lombok-${lombok.version}.jar" 
              skipexisting="true" 
@@ -178,8 +179,24 @@
         <echo message="Tests completed successfully."/>
     </target>
 
+    <!-- Target 5: scp - перемещение собранного jar на удаленный сервер -->
+    <target name="scp" depends="build" description="Deploy JAR file via SCP">
+        <echo message="Deploying JAR file via SCP..."/>
+        <echo message="Host: ${scp.host}"/>
+        <echo message="User: ${scp.user}"/>
+        <echo message="Remote dir: ${scp.remote.dir}"/>
 
-    <!-- Target 5: xml - валидация всех xml-файлов в проекте -->
+        <scp file="${jar.file}"
+             todir="${scp.user}@${scp.host}:${scp.remote.dir}"
+             keyfile="${scp.key.file}"
+             trust="true"
+             failonerror="false"/>
+
+        <echo message="SCP deployment complete (if SSH key configured)."/>
+    </target>
+
+
+    <!-- Target 6: xml - валидация всех xml-файлов в проекте -->
     <target name="xml" description="Validate XML files">
         <echo message="Validating XML files..."/>
         <xmlvalidate failonerror="false" lenient="true">
@@ -188,7 +205,7 @@
         <echo message="XML validation complete."/>
     </target>
     
-    <!-- Target 6: doc - генерация javadoc и добавление MD5/SHA-1 в MANIFEST -->
+    <!-- Target 7: doc - генерация javadoc и добавление MD5/SHA-1 в MANIFEST -->
     <target name="doc" depends="compile,generate-manifest" description="Generate Javadoc and checksums">
         <echo message="Generating Javadoc..."/>
         
@@ -219,7 +236,7 @@
         <echo message="Javadoc generated and checksums added to MANIFEST."/>
     </target>
     
-    <!-- Target 7: native2ascii - преобразование файлов локализации -->
+    <!-- Target 8: native2ascii - преобразование файлов локализации -->
     <target name="native2ascii" depends="init" description="Convert localization files with native2ascii">
         <echo message="Converting localization files..."/>
         
@@ -240,8 +257,19 @@ app.author=миреем</echo>
         
         <echo message="Native2ASCII conversion complete."/>
     </target>
-    
-    <!-- Target 8: env - сборка и запуск в альтернативном окружении -->
+
+    <!-- Target 9: music - воспроизведение музыки по завершению сборки -->
+    <target name="music" depends="build" description="Play music after successful build">
+        <echo message="Playing build success music..."/>
+
+        <exec executable="afplay" failonerror="false" osfamily="mac">
+            <arg value="${basedir}/sounds/success.mp3"/>
+        </exec>
+
+        <echo message="Build successful!"/>
+    </target>
+
+    <!-- Target 10: env - сборка и запуск в альтернативном окружении -->
     <target name="env" depends="build" description="Build and run in alternative environment">
         <echo message="Running in alternative environment..."/>
         <echo message="Java Home: ${alt.java.home}"/>
@@ -252,7 +280,7 @@ app.author=миреем</echo>
         </java>
     </target>
     
-    <!-- Target 9: alt - создание альтернативной версии с измененными именами -->
+    <!-- Target 11: alt - создание альтернативной версии с измененными именами -->
     <target name="alt" depends="init" description="Create alternative version with renamed classes">
         <echo message="Creating alternative version..."/>
         
@@ -282,7 +310,7 @@ app.author=миреем</echo>
         <echo message="Alternative version created: ${alt.jar.name}"/>
     </target>
     
-    <!-- Target 10: report - сохранение отчета junit и commit в git -->
+    <!-- Target 12: report - сохранение отчета junit и commit в git -->
     <target name="report" depends="test" description="Save JUnit report and commit to Git">
         <echo message="Saving test report and committing to Git..."/>
         
@@ -306,7 +334,7 @@ app.author=миреем</echo>
         <echo message="Test report saved and committed to Git."/>
     </target>
     
-    <!-- Target 11: team - сборка 4 предыдущих ревизий из git -->
+    <!-- Target 13: team - сборка 4 предыдущих ревизий из git -->
     <target name="team" depends="init" description="Build 4 previous Git revisions">
         <echo message="Building previous revisions..."/>
         
@@ -331,7 +359,7 @@ app.author=миреем</echo>
         <echo message="Team build complete: ${team.zip.file}"/>
     </target>
     
-    <!-- Target 12: diff - проверка и commit при изменении указанных классов -->
+    <!-- Target 14: diff - проверка и commit при изменении указанных классов -->
     <target name="diff" description="Check Git status and commit if specified classes changed">
         <echo message="Checking Git status for watched classes: ${git.classes.to.watch}"/>
         
@@ -359,7 +387,7 @@ app.author=миреем</echo>
         <echo message="No changes to watched classes detected." unless:set="classes.modified"/>
     </target>
     
-    <!-- Target 13: history - откат к работающей версии при ошибке компиляции -->
+    <!-- Target 15: history - откат к работающей версии при ошибке компиляции -->
     <target name="history" description="Rollback to working version if compilation fails">
         <echo message="Checking compilation and rolling back if needed..."/>
         
@@ -373,33 +401,6 @@ app.author=миреем</echo>
         </exec>
         
         <echo message="History rollback complete."/>
-    </target>
-    
-    <!-- Target 14: scp - перемещение собранного jar на удаленный сервер -->
-    <target name="scp" depends="build" description="Deploy JAR file via SCP">
-        <echo message="Deploying JAR file via SCP..."/>
-        <echo message="Host: ${scp.host}"/>
-        <echo message="User: ${scp.user}"/>
-        <echo message="Remote dir: ${scp.remote.dir}"/>
-        
-        <scp file="${jar.file}"
-             todir="${scp.user}@${scp.host}:${scp.remote.dir}"
-             keyfile="${scp.key.file}"
-             trust="true"
-             failonerror="false"/>
-        
-        <echo message="SCP deployment complete (if SSH key configured)."/>
-    </target>
-    
-    <!-- Target 15: music - воспроизведение музыки по завершению сборки -->
-    <target name="music" depends="build" description="Play music after successful build">
-        <echo message="Playing build success music..."/>
-        
-        <exec executable="afplay" failonerror="false" osfamily="mac">
-            <arg value="${basedir}/sounds/success.mp3"/>
-        </exec>
-        
-        <echo message="Build successful!"/>
     </target>
     
     <!-- Help target -->
