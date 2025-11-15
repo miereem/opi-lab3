@@ -246,11 +246,11 @@
         
         <mkdir dir="${resources.dir}"/>
         <echo file="${resources.dir}/messages_en.properties">app.greeting=Hello World!
-app.title=TPO Lab 1
+app.title=OPI Lab 3
 app.author=miereem</echo>
         <echo file="${resources.dir}/messages_ru.properties">app.greeting=Привет мир!
-app.title=ТПО Лаб 1
-app.author=миреем</echo>
+app.title=ОПИ Лаб 3
+app.author=miereem</echo>
         
         <mkdir dir="${native2ascii.dest.dir}"/>
         
