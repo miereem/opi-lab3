@@ -16,13 +16,13 @@ public abstract class Race {
 
     @SneakyThrows
     public void increaseCognitiveAbilitiesBy(int n) {
-            if (this.cognitiveAbilities + n > 300) throw new Exception("Impossible to Develop Cognitive Abilities Further.");
+            if (this.cognitiveAbilities + n > 300) throw new IllegalArgumentException("Impossible to Develop Cognitive Abilities Further.");
             this.cognitiveAbilities += n;
     }
 
     @SneakyThrows
     public void decreaseCognitiveAbilitiesBy(int n) {
-            if (this.cognitiveAbilities - n <= 0) throw new Exception("Impossible to Degrade Cognitive Abilities Further.");
+            if (this.cognitiveAbilities - n <= 0) throw new IllegalArgumentException("Impossible to Degrade Cognitive Abilities Further.");
             this.cognitiveAbilities -= n;
     }
 
