@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="tpo-lab1" default="build" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+<project name="opi-lab3" default="build" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
     
     <property file="build.properties"/>
     
@@ -179,21 +179,24 @@
         <echo message="Tests completed successfully."/>
     </target>
 
-    <!-- Target 5: scp - перемещение собранного jar на удаленный сервер -->
-    <target name="scp" depends="build" description="Deploy JAR file via SCP">
-        <echo message="Deploying JAR file via SCP..."/>
-        <echo message="Host: ${scp.host}"/>
-        <echo message="User: ${scp.user}"/>
-        <echo message="Remote dir: ${scp.remote.dir}"/>
+    <!-- Target 5: scp - копирование собранного JAR на удалённый сервер -->
+    <target name="scp" depends="build" description="Copy built project to remote server via SCP">
 
-        <scp file="${jar.file}"
-             todir="${scp.user}@${scp.host}:${scp.remote.dir}"
-             keyfile="${scp.key.file}"
-             trust="true"
-             failonerror="false"/>
+        <echo message="Copying JAR to remote server..."/>
 
-        <echo message="SCP deployment complete (if SSH key configured)."/>
+        <exec executable="sshpass" failonerror="true">
+            <arg value="-p"/>
+            <arg value="oHNC*3712"/>
+            <arg value="scp"/>
+
+            <arg value="${jar.file}"/>
+
+            <arg value="${scp.user}@${scp.host}:${scp.remote.dir}/"/>
+        </exec>
+
+        <echo message="SCP complete. File uploaded to ${scp.user}@${scp.host}:${scp.remote.dir}/"/>
     </target>
+
 
 
     <!-- Target 6: xml - валидация всех xml-файлов в проекте -->
